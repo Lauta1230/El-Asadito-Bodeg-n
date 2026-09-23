@@ -792,6 +792,204 @@ body::before {
   text-align: center;
 }
 
+/* --------------------------- SOMMELIER ---------------------------- */
+
+.wine-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1.5px solid var(--copper-deep);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--copper-deep);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.wine-cta:hover {
+  background: rgba(201, 126, 69, 0.14);
+}
+
+.wine-cta:active {
+  transform: scale(0.98);
+}
+
+.wine-cta-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.sommelier-backdrop {
+  z-index: 100;
+}
+
+.sommelier-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sommelier-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--copper-deep);
+}
+
+.sommelier-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.sommelier-context {
+  margin: 6px 0 14px;
+  font-size: 13px;
+  color: var(--paper-dim);
+}
+
+.wine-list {
+  display: grid;
+  gap: 10px;
+}
+
+.wine-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid rgba(38, 25, 14, 0.22);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.35);
+  font-family: var(--font-body);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.16s ease, border-color 0.2s ease, background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.wine-card:active {
+  transform: scale(0.98);
+}
+
+.wine-card.is-selected {
+  border-color: var(--copper-deep);
+  background: rgba(201, 126, 69, 0.16);
+  box-shadow: 0 6px 18px -10px rgba(154, 90, 38, 0.55);
+}
+
+.wine-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--copper-deep);
+  color: #fff8ef;
+  animation: pop-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.wine-check svg {
+  width: 12px;
+  height: 12px;
+}
+
+.wine-card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 24px;
+}
+
+.wine-bottle {
+  flex: none;
+  width: 18px;
+  height: 24px;
+  color: var(--copper-deep);
+}
+
+.wine-name {
+  font-size: 14.5px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--paper-ink);
+}
+
+.wine-note-label {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+
+.wine-note {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #4c3a28;
+}
+
+.wine-ideal {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--paper-dim);
+}
+
+.wine-ideal strong {
+  color: var(--paper-ink);
+}
+
+.wine-price {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--copper-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+.sheet-secondary {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1.5px solid var(--paper-ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--paper-ink);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.sheet-secondary:hover {
+  background: rgba(38, 25, 14, 0.08);
+}
+
+.sheet-secondary:active {
+  transform: scale(0.98);
+}
+
+/* Resaltado al llegar desde "Ver en carta" */
+.card.is-highlight {
+  border-color: var(--copper);
+  box-shadow: 0 0 0 2px rgba(201, 126, 69, 0.45), 0 12px 32px -18px rgba(0, 0, 0, 0.85);
+}
+
 /* ------------------------- BANDA FOTO + FOOTER --------------------- */
 
 .photo-band {

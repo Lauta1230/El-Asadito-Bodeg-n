@@ -4,7 +4,9 @@
  * i18n ES/PT/EN y formatos de precio ARS/USD/BRL por Oficial/Blue.
  */
 import { DONENESS_LEVELS, supportsDoneness } from '../src/data/doneness';
+import { getWineRecommendations, hasWinePairing } from '../src/data/pairings';
 import { CATEGORIES, MENU_ITEMS } from '../src/data/menu';
+import { WINES } from '../src/data/wine';
 import { UI_STRINGS } from '../src/data/translations';
 import type { Language } from '../src/data/types';
 import { formatPrice } from '../src/utils/format';
@@ -96,6 +98,47 @@ for (const key of ['donenessQuestion', 'confirmDoneness', 'donenessConfirmed'] a
     if (key === 'donenessConfirmed' && !text.includes('{level}')) {
       errors.push(`donenessConfirmed[${lang}] debe contener {level}`);
     }
+  }
+}
+
+/* ---- Fase 4: sommelier — vinos reales y elegibilidad de maridaje ---- */
+for (const wine of WINES) {
+  const source = MENU_ITEMS.find((m) => m.id === wine.id);
+  if (!source) errors.push(`vino ${wine.id}: no existe en menu.ts (vino inventado)`);
+  else if (source.category !== 'bebidas') errors.push(`vino ${wine.id}: no es una bebida de la carta`);
+  for (const lang of LANGS) {
+    if (!wine.note[lang]?.trim()) errors.push(`vino ${wine.id}: note[${lang}] vacío`);
+    if (!wine.idealFor[lang]?.trim()) errors.push(`vino ${wine.id}: idealFor[${lang}] vacío`);
+  }
+}
+const pairedIds = MENU_ITEMS.filter((i) => hasWinePairing(i)).map((i) => i.id);
+if (pairedIds.length !== 18) errors.push(`productos con maridaje=${pairedIds.length} (esperado 18)`);
+for (const id of pairedIds) {
+  const item = MENU_ITEMS.find((m) => m.id === id);
+  if (!item) continue;
+  if (item.category === 'postres' || item.category === 'bebidas') {
+    errors.push(`maridaje indebido en ${id} (${item.category})`);
+  }
+}
+for (const excluded of [
+  'trucha-salmonada',
+  'cintas-con-frutos-de-mar',
+  'noquis-de-papa',
+  'capelettis-de-calabaza-y-nueces',
+  'sopa-cremosa-de-calabaza',
+  'mousse-de-chocolate',
+  'sifon-de-soda',
+]) {
+  const item = MENU_ITEMS.find((m) => m.id === excluded);
+  if (item && getWineRecommendations(item).length > 0) {
+    errors.push(`${excluded} no debería tener maridaje`);
+  }
+}
+const churrasco = MENU_ITEMS.find((m) => m.id === 'churrascos-de-ternera');
+if (!churrasco || !hasWinePairing(churrasco)) errors.push('churrascos-de-ternera sin maridaje');
+for (const key of ['seeWine', 'pairingTitle', 'idealFor', 'seeOnMenu', 'sommelierNote', 'punto'] as const) {
+  for (const lang of LANGS) {
+    if (!UI_STRINGS[key][lang]?.trim()) errors.push(`UI ${key}[${lang}] vacío`);
   }
 }
 

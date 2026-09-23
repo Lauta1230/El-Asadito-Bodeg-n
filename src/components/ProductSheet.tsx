@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { usePreferences, useT } from '../context/PreferencesContext';
 import { supportsDoneness } from '../data/doneness';
+import { hasWinePairing } from '../data/pairings';
 import { CATEGORIES } from '../data/menu';
 import type { DonenessId, MenuItem } from '../data/types';
 import { formatPrice } from '../utils/format';
 import { DonenessSelector } from './doneness/DonenessSelector';
+import { WineGlassIcon } from './sommelier/icons';
 
 interface Props {
   item: MenuItem | null;
@@ -12,6 +14,7 @@ interface Props {
   /** Punto de carne confirmado en la sesión para el producto abierto. */
   confirmedDoneness?: DonenessId;
   onConfirmDoneness?: (productId: string, level: DonenessId) => void;
+  onOpenSommelier?: (item: MenuItem) => void;
 }
 
 /**
@@ -23,24 +26,17 @@ export function ProductSheet({
   onClose,
   confirmedDoneness,
   onConfirmDoneness,
+  onOpenSommelier,
 }: Props) {
   const { lang, currency, rateType } = usePreferences();
   const t = useT();
   const closeRef = useRef<HTMLButtonElement | null>(null);
 
+  /* El ESC apilado y el scroll-lock los maneja el Shell (Fase 4). */
   useEffect(() => {
     if (!item) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
     closeRef.current?.focus({ preventScroll: true });
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [item, onClose]);
+  }, [item]);
 
   if (!item) return null;
 
@@ -70,6 +66,16 @@ export function ProductSheet({
             confirmed={confirmedDoneness}
             onConfirm={(level) => onConfirmDoneness?.(item.id, level)}
           />
+        )}
+        {hasWinePairing(item) && (
+          <button
+            type="button"
+            className="wine-cta"
+            onClick={() => onOpenSommelier?.(item)}
+          >
+            <WineGlassIcon className="wine-cta-icon" />
+            {t('seeWine')}
+          </button>
         )}
         <button ref={closeRef} type="button" className="sheet-close" onClick={onClose}>
           {t('cerrar')}

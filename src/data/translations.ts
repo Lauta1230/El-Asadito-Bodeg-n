@@ -288,6 +288,12 @@ export type UiKey =
   | 'donenessQuestion'
   | 'confirmDoneness'
   | 'donenessConfirmed'
+  | 'seeWine'
+  | 'pairingTitle'
+  | 'idealFor'
+  | 'seeOnMenu'
+  | 'sommelierNote'
+  | 'punto'
   | 'footerMeta';
 
 export const UI_STRINGS: Record<UiKey, LocalizedText> = {
@@ -326,6 +332,24 @@ export const UI_STRINGS: Record<UiKey, LocalizedText> = {
     pt: '{level} selecionado',
     en: '{level} selected',
   },
+  seeWine: {
+    es: 'Ver vino recomendado',
+    pt: 'Ver vinho recomendado',
+    en: 'See recommended wine',
+  },
+  pairingTitle: {
+    es: 'Maridaje recomendado',
+    pt: 'Harmonização recomendada',
+    en: 'Recommended pairing',
+  },
+  idealFor: { es: 'Ideal para', pt: 'Ideal para', en: 'Ideal for' },
+  seeOnMenu: { es: 'Ver en carta', pt: 'Ver no cardápio', en: 'View on menu' },
+  sommelierNote: {
+    es: 'Nota del sommelier',
+    pt: 'Nota do sommelier',
+    en: 'Sommelier’s note',
+  },
+  punto: { es: 'Punto', pt: 'Ponto', en: 'Doneness' },
   footerMeta: {
     es: 'Demo comercial · Fase 2 — Carta digitalizada fielmente desde la carta física del restaurante.',
     pt: 'Demo comercial · Fase 2 — Cardápio digitalizado fielmente a partir da carta física do restaurante.',

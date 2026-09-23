@@ -39,6 +39,23 @@ Base visual y funcional del menú:
 - Selección temporal por producto en el estado de la sesión; `menu.ts`
   y los precios no se tocan. Coexiste con ARS/USD/BRL y Oficial/Blue.
 
+## Fase 4
+
+- **Sommelier digital**: CTA «Ver vino recomendado» en el ProductSheet solo
+  donde aporta (carnes rojas, platos intensos, guisos y pastas con salsas
+  fuertes; nunca en postres, bebidas, pescados o salsas cremosas).
+- Sheet «Maridaje recomendado» apilado sobre el detalle, con la misma
+  estética de papel + cobre: recomendaciones de vinos REALES de la carta
+  (el único existente: Pingüino grande de vino de la casa + Sifón), nota
+  editorial del sommelier e «Ideal para» localizados ES/PT/EN, precio con
+  el conversor existente (ARS/USD/BRL · Oficial/Blue).
+- Contexto del punto de carne: si el producto tiene punto confirmado, el
+  sommelier lo muestra («Punto: Jugoso») sin depender de él.
+- Lógica separada de la UI: `data/wine.ts` (vinos) + `data/pairings.ts`
+  (`getWineRecommendations`, relaciones por id). Bodega/cepa no figuran en
+  la carta real: pendientes, no se inventan ni se muestran.
+- «Ver en carta» cierra los sheets y resalta la bebida en la carta.
+
 ## Validación
 
 ```bash

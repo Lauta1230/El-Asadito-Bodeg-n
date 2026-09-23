@@ -20,6 +20,7 @@ export function ProductCard({ item, index, onSelect }: Props) {
       ref={ref}
       type="button"
       className="card reveal"
+      data-product-id={item.id}
       style={{ transitionDelay: `${delay}ms` }}
       onClick={() => onSelect(item)}
       aria-haspopup="dialog"
