@@ -21,16 +21,23 @@ export function CategoryNav() {
 
   const active = useScrollSpy(IDS, offset);
 
+  /* Solo el track horizontal. scrollIntoView() también desplaza ancestros
+     verticales y pelea con useScrollSpy (que es solo lectura). */
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
     const chip = track.querySelector<HTMLElement>(`[data-cat="${active}"]`);
     if (!chip) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    chip.scrollIntoView({
+    const trackBox = track.getBoundingClientRect();
+    const chipBox = chip.getBoundingClientRect();
+    const left =
+      track.scrollLeft +
+      (chipBox.left - trackBox.left) -
+      (track.clientWidth - chipBox.width) / 2;
+    track.scrollTo({
+      left,
       behavior: reduce ? 'auto' : 'smooth',
-      inline: 'center',
-      block: 'nearest',
     });
   }, [active]);
 
