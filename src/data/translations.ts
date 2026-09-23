@@ -294,6 +294,22 @@ export type UiKey =
   | 'seeOnMenu'
   | 'sommelierNote'
   | 'punto'
+  | 'reviewTitle'
+  | 'reviewSubtitle'
+  | 'starsAria'
+  | 'rating5'
+  | 'ratingMid'
+  | 'ratingLow'
+  | 'reviewGoogle'
+  | 'reviewPrivateSuggestion'
+  | 'nameLabel'
+  | 'namePlaceholder'
+  | 'commentLabel'
+  | 'commentPlaceholder'
+  | 'sendPrivate'
+  | 'commentRequired'
+  | 'feedbackReady'
+  | 'whatsappPending'
   | 'footerMeta';
 
 export const UI_STRINGS: Record<UiKey, LocalizedText> = {
@@ -350,6 +366,74 @@ export const UI_STRINGS: Record<UiKey, LocalizedText> = {
     en: 'Sommelier’s note',
   },
   punto: { es: 'Punto', pt: 'Ponto', en: 'Doneness' },
+  reviewTitle: {
+    es: '¿Cómo fue tu experiencia?',
+    pt: 'Como foi sua experiência?',
+    en: 'How was your experience?',
+  },
+  reviewSubtitle: {
+    es: 'Tu opinión ayuda al equipo y a otros viajeros.',
+    pt: 'Sua opinião ajuda a equipe e outros viajantes.',
+    en: 'Your feedback helps the team and fellow travelers.',
+  },
+  starsAria: {
+    es: 'Valoración con estrellas',
+    pt: 'Avaliação com estrelas',
+    en: 'Star rating',
+  },
+  rating5: {
+    es: '¡Nos alegra mucho!',
+    pt: 'Ficamos muito felizes!',
+    en: 'We’re so glad!',
+  },
+  ratingMid: {
+    es: 'Gracias por contarnos cómo fue.',
+    pt: 'Obrigado por nos contar como foi.',
+    en: 'Thanks for telling us how it went.',
+  },
+  ratingLow: {
+    es: 'Queremos saber qué podemos mejorar.',
+    pt: 'Queremos saber o que podemos melhorar.',
+    en: 'We want to know what we can improve.',
+  },
+  reviewGoogle: {
+    es: 'Dejar reseña en Google',
+    pt: 'Deixar avaliação no Google',
+    en: 'Leave a Google review',
+  },
+  reviewPrivateSuggestion: {
+    es: 'Enviar sugerencia privada',
+    pt: 'Enviar sugestão privada',
+    en: 'Send private suggestion',
+  },
+  nameLabel: { es: 'Nombre (opcional)', pt: 'Nome (opcional)', en: 'Name (optional)' },
+  namePlaceholder: { es: 'Tu nombre', pt: 'Seu nome', en: 'Your name' },
+  commentLabel: { es: 'Comentario', pt: 'Comentário', en: 'Comment' },
+  commentPlaceholder: {
+    es: 'Contanos qué podemos mejorar…',
+    pt: 'Conte-nos o que podemos melhorar…',
+    en: 'Tell us what we can improve…',
+  },
+  sendPrivate: {
+    es: 'Enviar comentario privado',
+    pt: 'Enviar comentário privado',
+    en: 'Send private comment',
+  },
+  commentRequired: {
+    es: 'Por favor, escribí un comentario.',
+    pt: 'Por favor, escreva um comentário.',
+    en: 'Please write a comment.',
+  },
+  feedbackReady: {
+    es: 'Tu comentario ya está listo para enviar.',
+    pt: 'Seu comentário já está pronto para enviar.',
+    en: 'Your comment is ready to send.',
+  },
+  whatsappPending: {
+    es: 'Canal privado pendiente de configuración.',
+    pt: 'Canal privado pendente de configuração.',
+    en: 'Private channel pending configuration.',
+  },
   footerMeta: {
     es: 'Demo comercial · Fase 2 — Carta digitalizada fielmente desde la carta física del restaurante.',
     pt: 'Demo comercial · Fase 2 — Cardápio digitalizado fielmente a partir da carta física do restaurante.',

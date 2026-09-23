@@ -6,6 +6,7 @@ import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { MenuSection } from './components/MenuSection';
 import { ProductSheet } from './components/ProductSheet';
+import { RatingSection } from './components/reviews/RatingSection';
 import { SommelierSheet } from './components/sommelier/SommelierSheet';
 import { PreferencesProvider } from './context/PreferencesContext';
 import { CATEGORIES, MENU_ITEMS } from './data/menu';
@@ -95,6 +96,7 @@ function Shell() {
           />
         ))}
       </main>
+      <RatingSection />
       <Footer />
       <ProductSheet
         item={selected}

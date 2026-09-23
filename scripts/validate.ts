@@ -3,10 +3,12 @@
  * integridad de la carta (46 productos / 7 categorías), completitud
  * i18n ES/PT/EN y formatos de precio ARS/USD/BRL por Oficial/Blue.
  */
+import { businessConfig } from '../src/data/business';
 import { DONENESS_LEVELS, supportsDoneness } from '../src/data/doneness';
 import { getWineRecommendations, hasWinePairing } from '../src/data/pairings';
 import { CATEGORIES, MENU_ITEMS } from '../src/data/menu';
 import { WINES } from '../src/data/wine';
+import { buildWhatsAppUrl, composeFeedbackMessage, getRatingBand } from '../src/utils/reviews';
 import { UI_STRINGS } from '../src/data/translations';
 import type { Language } from '../src/data/types';
 import { formatPrice } from '../src/utils/format';
@@ -137,6 +139,62 @@ for (const excluded of [
 const churrasco = MENU_ITEMS.find((m) => m.id === 'churrascos-de-ternera');
 if (!churrasco || !hasWinePairing(churrasco)) errors.push('churrascos-de-ternera sin maridaje');
 for (const key of ['seeWine', 'pairingTitle', 'idealFor', 'seeOnMenu', 'sommelierNote', 'punto'] as const) {
+  for (const lang of LANGS) {
+    if (!UI_STRINGS[key][lang]?.trim()) errors.push(`UI ${key}[${lang}] vacío`);
+  }
+}
+
+/* ---- Fase 5: reseñas — bandas, WhatsApp y configuración ---- */
+const bands: [number, string][] = [
+  [5, 'high'],
+  [4, 'mid'],
+  [3, 'mid'],
+  [2, 'low'],
+  [1, 'low'],
+];
+for (const [n, expected] of bands) {
+  if (getRatingBand(n) !== expected) errors.push(`getRatingBand(${n}) != ${expected}`);
+}
+if (buildWhatsAppUrl(null, 'hola') !== null) errors.push('WhatsApp sin teléfono debe ser null');
+if (buildWhatsAppUrl('  ', 'hola') !== null) errors.push('WhatsApp vacío debe ser null');
+const wa = buildWhatsAppUrl('5492615029744', 'Hola a&b <i>');
+if (
+  wa !== 'https://wa.me/5492615029744?text=Hola%20a%26b%20%3Ci%3E'
+) {
+  errors.push(`URL de WhatsApp inesperada: ${wa}`);
+}
+const msg = composeFeedbackMessage({
+  lang: 'es',
+  restaurantName: businessConfig.name,
+  rating: 2,
+  name: 'Ana',
+  comment: 'La música muy fuerte <script>',
+});
+for (const part of ['Ana', '2/5', businessConfig.name, 'La música muy fuerte <script>']) {
+  if (!msg.includes(part)) errors.push(`mensaje de WhatsApp sin "${part}"`);
+}
+if (msg.includes('<html') || msg.includes('undefined')) errors.push('mensaje de WhatsApp con contenido inválido');
+if (businessConfig.mapsUrl !== 'https://maps.app.goo.gl/JYSAaXyyJXKDk1hY8') {
+  errors.push('mapsUrl centralizada no coincide con la URL oficial');
+}
+for (const key of [
+  'reviewTitle',
+  'reviewSubtitle',
+  'starsAria',
+  'rating5',
+  'ratingMid',
+  'ratingLow',
+  'reviewGoogle',
+  'reviewPrivateSuggestion',
+  'nameLabel',
+  'namePlaceholder',
+  'commentLabel',
+  'commentPlaceholder',
+  'sendPrivate',
+  'commentRequired',
+  'feedbackReady',
+  'whatsappPending',
+] as const) {
   for (const lang of LANGS) {
     if (!UI_STRINGS[key][lang]?.trim()) errors.push(`UI ${key}[${lang}] vacío`);
   }

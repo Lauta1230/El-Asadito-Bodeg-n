@@ -56,6 +56,26 @@ Base visual y funcional del menú:
   la carta real: pendientes, no se inventan ni se muestran.
 - «Ver en carta» cierra los sheets y resalta la bebida en la carta.
 
+## Fase 5
+
+- **«¿Cómo fue tu experiencia?»** al final de la carta, antes del footer:
+  tarjeta de papel cálido con esquineros cobreados y 5 estrellas táctiles
+  (botones reales, aria-labels, teclado, estado visible sin depender del color).
+- Flujos por valoración, sin ocultar reseñas negativas:
+  - 5★ → «¡Nos alegra mucho!» + CTA «Dejar reseña en Google» (URL oficial).
+  - 3–4★ → estado neutral + «Dejar reseña en Google» o «Enviar sugerencia
+    privada» (formulario WhatsApp).
+  - 1–2★ → estado de escucha + formulario privado (nombre opcional,
+    comentario obligatorio) → WhatsApp con mensaje dinámico localizado.
+- Configuración central `data/business.ts`: `businessConfig.mapsUrl` y
+  `businessContact.whatsapp` (número tomado del wa.me público de la bio
+  oficial de IG; pendiente de confirmación; `null` desactiva el canal sin
+  generar URLs inválidas).
+- `utils/reviews.ts`: `getRatingBand`, `buildWhatsAppUrl` (encodeURIComponent,
+  null si no hay teléfono) y `composeFeedbackMessage` (texto plano, sin HTML).
+- Confirmación local «Tu comentario ya está listo para enviar.» (aria-live);
+  nada se almacena en localStorage; preferencias de idioma/moneda intactas.
+
 ## Validación
 
 ```bash
