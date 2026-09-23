@@ -311,6 +311,7 @@ export type UiKey =
   | 'commentRequired'
   | 'feedbackReady'
   | 'whatsappPending'
+  | 'demoNotConfigured'
   | 'footerMeta';
 
 export const UI_STRINGS: Record<UiKey, LocalizedText> = {
@@ -435,6 +436,11 @@ export const UI_STRINGS: Record<UiKey, LocalizedText> = {
     es: 'Canal privado pendiente de configuración.',
     pt: 'Canal privado pendente de configuração.',
     en: 'Private channel pending configuration.',
+  },
+  demoNotConfigured: {
+    es: 'Demo — destino no configurado',
+    pt: 'Demo — destino não configurado',
+    en: 'Demo — destination not configured',
   },
   footerMeta: {
     es: 'Demo comercial · Fase 2 — Carta digitalizada fielmente desde la carta física del restaurante.',

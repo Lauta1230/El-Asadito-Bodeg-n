@@ -76,7 +76,11 @@ export function PrivateFeedbackForm({ rating }: Props) {
       <button type="submit" className="sheet-close feedback-send" disabled={!phone}>
         {t('sendPrivate')}
       </button>
-      {!phone && <p className="form-internal">{t('whatsappPending')}</p>}
+      {!phone && (
+        <p className="form-internal">
+          {biz.isCustomDemo ? t('demoNotConfigured') : t('whatsappPending')}
+        </p>
+      )}
       <p className="form-status" role="status" aria-live="polite">
         {sent ? t('feedbackReady') : ''}
       </p>

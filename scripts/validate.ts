@@ -255,6 +255,41 @@ if (parseDemoConfig(`?local=${encodeURIComponent(accentName)}`).local !== accent
 }
 parseDemoConfig('?%E2%82%AC&local=%E0%A4'); // malformada: no debe lanzar
 
+/* ---- Fase 7: seguridad comercial de la demo maestra ---- */
+const rCustom = resolveBusiness(parseDemoConfig('?local=La%20Parrilla'));
+if (!rCustom.isCustomDemo) errors.push('La Parrilla debe ser isCustomDemo');
+if (
+  rCustom.mapsUrl !== null ||
+  rCustom.whatsapp !== null ||
+  rCustom.instagramUrl !== null ||
+  rCustom.address !== null
+) {
+  errors.push('demo custom no debe heredar canales reales de El Asadito');
+}
+const rCustomCfg = resolveBusiness(
+  parseDemoConfig('?local=La%20Parrilla&wa=5492615029744&maps=https%3A%2F%2Fmaps.app.goo.gl%2Ftest'),
+);
+if (rCustomCfg.whatsapp !== DEFAULT_WA || rCustomCfg.mapsUrl !== 'https://maps.app.goo.gl/test') {
+  errors.push('demo custom con overrides debe usarlos');
+}
+if (rCustomCfg.instagramUrl !== null) errors.push('demo custom nunca hereda Instagram');
+
+const rSame = resolveBusiness(parseDemoConfig('?local=El%20Asadito%20Bodeg%C3%B3n'));
+if (rSame.isCustomDemo) errors.push('local igual al default no es custom');
+if (rSame.mapsUrl !== OFFICIAL_MAPS || rSame.whatsapp !== DEFAULT_WA) {
+  errors.push('caso A debe usar defaults reales');
+}
+for (const nm of ['Don Pepe & Hijos', 'LA PARRILLA', 'El Asadito', "L'Asado"]) {
+  const r = resolveBusiness(parseDemoConfig(`?local=${encodeURIComponent(nm)}`));
+  if (r.name !== nm) errors.push(`nombre "${nm}" debe conservarse`);
+  if (!r.isCustomDemo) errors.push(`"${nm}" debe ser custom`);
+}
+for (const key of ['demoNotConfigured', 'mesa'] as const) {
+  for (const lang of LANGS) {
+    if (!UI_STRINGS[key][lang]?.trim()) errors.push(`UI ${key}[${lang}] vacío`);
+  }
+}
+
 const ars = formatPrice(12500, 'ARS', 'blue');
 if (ars !== '$ 12.500') errors.push(`ARS esperaba "$ 12.500" y dio "${ars}"`);
 const usd = formatPrice(16000, 'USD', 'oficial');

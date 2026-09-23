@@ -88,6 +88,12 @@ La misma app se personaliza sin reconstruir mediante query params:
 | `maps`  | Sobrescribe URL de Google Maps (reseñas + header) | solo `https:` |
 | `logo`  | Logo remoto con fallback si falla | `https:` + extensión de imagen |
 
+**Seguridad comercial (Fase 7):** si `?local=` es otro comercio
+(`isCustomDemo`), la demo **nunca** muestra los canales reales de El Asadito
+como propios: sin `?maps=`/`?wa=` esos canales quedan desactivados con la
+nota «Demo — destino no configurado», el Instagram y la dirección se ocultan.
+Con `?local=El Asadito Bodegón` (o sin `local`) se usan los defaults reales.
+
 Sin parámetros: experiencia exacta de El Asadito Bodegón (defaults en
 `data/business.ts`). Parsing centralizado en `utils/demoConfig.ts`
 (`parseDemoConfig` / `getDemoConfig` / `resolveBusiness`) y consumido por
@@ -101,17 +107,35 @@ Ejemplos:
 /
 /?local=La%20Parrilla
 /?local=La%20Parrilla&mesa=7
+/?local=La%20Parrilla&mesa=7&wa=5492615029744
+/?local=La%20Parrilla&mesa=7&maps=https%3A%2F%2Fmaps.app.goo.gl%2Ftest
 /?local=La%20Parrilla&mesa=7&wa=5492615029744&maps=https%3A%2F%2Fmaps.app.goo.gl%2Ftest
+/?local=El%20Asadito%20Bodeg%C3%B3n
 /?logo=https%3A%2F%2Fejemplo.com%2Flogo.png
 ```
 
-## Validación
+## PWA y deploy
+
+- `public/manifest.webmanifest` + `public/icon.svg`: instalación básica
+  (standalone, theme/background `#14100b`). Sin service worker: prioridad
+  estabilidad.
+- Build 100% estático (`dist/`): compatible directo con Vercel o Netlify,
+  sin rewrites (los query params se leen en el cliente) y sin depender de
+  localhost.
+
+## Ejecución
 
 ```bash
-npm run build   # tsc + vite build
-npm run check   # 46 productos, 7 categorías, i18n completo, formatos de precio,
-                # elegibilidad del punto de carne y textos del módulo ES/PT/EN
+npm install
+npm run dev      # desarrollo en 0.0.0.0:5173
+npm run build    # tsc + vite build → dist/
+npm run check    # validación de datos, i18n, monedas, módulos y demo maestra
 ```
+
+`npm run check` valida: 46 productos, 7 categorías, i18n ES/PT/EN completo,
+formatos ARS/USD/BRL, elegibilidad del punto de carne (2 productos),
+maridajes (18 productos, 1 vino real), flujos de reseñas, sanitización de
+query params y seguridad comercial de la demo maestra.
 
 ## Stack y estructura
 
@@ -120,13 +144,18 @@ Vite + React + TypeScript, estilos CSS propios (sin librerías de UI).
 ```
 src/
   components/   Header, LanguageSelector, Hero, CurrencyBar, CategoryNav,
-                MenuSection, ProductCard, ProductSheet, Footer
+                MenuSection, ProductCard, ProductSheet, Footer, LogoImage
+    doneness/   DonenessSelector · DonenessOption · DonenessIllustration
+    sommelier/  SommelierSheet · WineRecommendationCard · icons
+    reviews/    RatingSection · RatingStars · PrivateFeedbackForm
   context/      PreferencesContext (idioma, moneda, cambio + useT)
-  data/         types.ts · menu.ts (fuente ES) · translations.ts · exchangeRates.ts
-  hooks/        useScrollSpy · useReveal
+  data/         types · menu (fuente ES) · translations · exchangeRates ·
+                doneness · pairings · wine · business
+  hooks/        useScrollSpy · useReveal · useDemoConfig
   styles/       global.css
-  utils/        format.ts
+  utils/        format · reviews · demoConfig
 scripts/        validate.ts
+public/         manifest.webmanifest · icon.svg · images/
 ```
 
 Fotografías de referencia del local en `public/images` (fachada y parrilla).

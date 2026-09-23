@@ -5,6 +5,31 @@ import { getRatingBand } from '../../utils/reviews';
 import { PrivateFeedbackForm } from './PrivateFeedbackForm';
 import { RatingStars } from './RatingStars';
 
+/** CTA de reseña Google: navega si hay Maps configurado; si no, estado demo. */
+function GoogleReviewCta({ mapsUrl }: { mapsUrl: string | null }) {
+  const t = useT();
+  if (mapsUrl) {
+    return (
+      <a
+        className="btn-primary review-google"
+        href={mapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {t('reviewGoogle')}
+      </a>
+    );
+  }
+  return (
+    <>
+      <button type="button" className="btn-primary btn-is-disabled" disabled>
+        {t('reviewGoogle')}
+      </button>
+      <p className="demo-note">{t('demoNotConfigured')}</p>
+    </>
+  );
+}
+
 /**
  * "¿Cómo fue tu experiencia?" — bloque final antes del footer.
  * 5★ → Google · 3–4★ → Google o sugerencia privada · 1–2★ → formulario
@@ -35,14 +60,7 @@ export function RatingSection() {
         {band === 'high' && (
           <div className="review-state">
             <p className="review-msg">{t('rating5')}</p>
-            <a
-              className="btn-primary review-google"
-              href={biz.mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t('reviewGoogle')}
-            </a>
+            <GoogleReviewCta mapsUrl={biz.mapsUrl} />
           </div>
         )}
 
@@ -50,14 +68,7 @@ export function RatingSection() {
           <div className="review-state">
             <p className="review-msg">{t('ratingMid')}</p>
             <div className="review-actions">
-              <a
-                className="btn-primary review-google"
-                href={biz.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {t('reviewGoogle')}
-              </a>
+              <GoogleReviewCta mapsUrl={biz.mapsUrl} />
               <button
                 type="button"
                 className="sheet-secondary review-private-toggle"

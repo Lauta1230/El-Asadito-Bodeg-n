@@ -1,6 +1,5 @@
 import { useT } from '../context/PreferencesContext';
 import { useDemoBusiness } from '../hooks/useDemoConfig';
-import { RESTAURANT } from '../data/menu';
 
 export function Footer() {
   const t = useT();
@@ -12,15 +11,22 @@ export function Footer() {
       <footer className="footer">
         <div className="container footer-inner">
           <p className="footer-name">{biz.name}</p>
-          <p className="footer-address">{RESTAURANT.address}</p>
+          {biz.address && <p className="footer-address">{biz.address}</p>}
           <p className="footer-links">
-            <a href={biz.instagramUrl} target="_blank" rel="noreferrer">
-              Instagram {biz.instagramHandle}
-            </a>
-            <span aria-hidden="true">·</span>
-            <a href={biz.mapsUrl} target="_blank" rel="noreferrer">
-              {t('comoLlegar')}
-            </a>
+            {biz.instagramUrl && (
+              <a href={biz.instagramUrl} target="_blank" rel="noreferrer">
+                Instagram {biz.instagramHandle}
+              </a>
+            )}
+            {biz.instagramUrl && biz.mapsUrl && <span aria-hidden="true">·</span>}
+            {biz.mapsUrl && (
+              <a href={biz.mapsUrl} target="_blank" rel="noreferrer">
+                {t('comoLlegar')}
+              </a>
+            )}
+            {!biz.instagramUrl && !biz.mapsUrl && (
+              <span className="demo-note-inline">{t('demoNotConfigured')}</span>
+            )}
           </p>
           <p className="footer-meta">{t('footerMeta')}</p>
         </div>

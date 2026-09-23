@@ -26,12 +26,21 @@ export interface ResolvedBusiness {
   heroSub?: string;
   /** true si no hay ?local= (experiencia default de El Asadito). */
   isDefault: boolean;
+  /**
+   * Seguridad comercial: true cuando ?local= apunta a OTRO comercio.
+   * En ese caso los canales operativos (Maps, WhatsApp, Instagram,
+   * dirección) nunca se toman del default de El Asadito: solo valen
+   * los overrides explícitos (?maps=, ?wa=); el resto queda null y la
+   * UI lo trata como demo sin mostrar información falsa.
+   */
+  isCustomDemo: boolean;
   mesa: string | null;
   whatsapp: string | null;
-  mapsUrl: string;
+  mapsUrl: string | null;
   logoUrl: string | null;
-  instagramUrl: string;
-  instagramHandle: string;
+  instagramUrl: string | null;
+  instagramHandle: string | null;
+  address: string | null;
 }
 
 const LOGO_EXTENSIONS = ['.png', '.jpg', '.jpeg', '.webp', '.svg', '.gif'];
@@ -110,17 +119,23 @@ export function getDemoConfig(): DemoConfig {
 
 /** Resuelve defaults de El Asadito + overrides válidos de la URL. */
 export function resolveBusiness(cfg: DemoConfig): ResolvedBusiness {
+  const normalized = (cfg.local ?? '').toLowerCase().replace(/\s+/g, ' ').trim();
+  const defaultName = businessConfig.name.toLowerCase().replace(/\s+/g, ' ').trim();
+  const isCustomDemo = cfg.local !== null && normalized !== defaultName;
+
   return {
     name: cfg.local ?? businessConfig.name,
     heroTitle: cfg.local ?? RESTAURANT.name,
     heroSub: cfg.local ? undefined : RESTAURANT.sub,
     isDefault: cfg.local === null,
+    isCustomDemo,
     mesa: cfg.mesa,
-    whatsapp: cfg.whatsappOverride ?? businessContact.whatsapp,
-    mapsUrl: cfg.mapsOverride ?? businessConfig.mapsUrl,
+    whatsapp: cfg.whatsappOverride ?? (isCustomDemo ? null : businessContact.whatsapp),
+    mapsUrl: cfg.mapsOverride ?? (isCustomDemo ? null : businessConfig.mapsUrl),
     logoUrl: cfg.logo,
-    instagramUrl: RESTAURANT.instagramUrl,
-    instagramHandle: RESTAURANT.instagramHandle,
+    instagramUrl: isCustomDemo ? null : RESTAURANT.instagramUrl,
+    instagramHandle: isCustomDemo ? null : RESTAURANT.instagramHandle,
+    address: isCustomDemo ? null : RESTAURANT.address,
   };
 }
 

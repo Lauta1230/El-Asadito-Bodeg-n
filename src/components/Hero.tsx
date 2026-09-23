@@ -1,6 +1,5 @@
 import { useT } from '../context/PreferencesContext';
 import { useDemoBusiness } from '../hooks/useDemoConfig';
-import { RESTAURANT } from '../data/menu';
 import { LogoImage } from './LogoImage';
 
 export function Hero() {
@@ -17,7 +16,7 @@ export function Hero() {
         <h1 className="hero-title">{biz.heroTitle}</h1>
         {biz.heroSub && <p className="hero-sub">{biz.heroSub}</p>}
         <div className="hero-rule" aria-hidden="true" />
-        <p className="hero-address">{RESTAURANT.address}</p>
+        {biz.address && <p className="hero-address">{biz.address}</p>}
         <a className="btn-primary" href="#entradas">
           {t('verCarta')}
         </a>
