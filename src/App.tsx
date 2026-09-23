@@ -11,6 +11,7 @@ import { SommelierSheet } from './components/sommelier/SommelierSheet';
 import { PreferencesProvider } from './context/PreferencesContext';
 import { CATEGORIES, MENU_ITEMS } from './data/menu';
 import type { DonenessId, MenuItem } from './data/types';
+import { useDemoBusiness } from './hooks/useDemoConfig';
 
 export default function App() {
   return (
@@ -22,6 +23,12 @@ export default function App() {
 
 function Shell() {
   const [selected, setSelected] = useState<MenuItem | null>(null);
+  const biz = useDemoBusiness();
+
+  /* "{local} — Menú Digital" */
+  useEffect(() => {
+    document.title = `${biz.name} — Menú Digital`;
+  }, [biz.name]);
   /** Punto de carne confirmado por producto (temporal, solo sesión). */
   const [doneness, setDoneness] = useState<Record<string, DonenessId>>({});
   /** Producto para el que está abierto el sommelier (sheet apilado). */

@@ -4,6 +4,7 @@
  * i18n ES/PT/EN y formatos de precio ARS/USD/BRL por Oficial/Blue.
  */
 import { businessConfig } from '../src/data/business';
+import { parseDemoConfig, resolveBusiness } from '../src/utils/demoConfig';
 import { DONENESS_LEVELS, supportsDoneness } from '../src/data/doneness';
 import { getWineRecommendations, hasWinePairing } from '../src/data/pairings';
 import { CATEGORIES, MENU_ITEMS } from '../src/data/menu';
@@ -199,6 +200,60 @@ for (const key of [
     if (!UI_STRINGS[key][lang]?.trim()) errors.push(`UI ${key}[${lang}] vacío`);
   }
 }
+
+/* ---- Fase 6: demo maestra — params, defaults y sanitización ---- */
+const OFFICIAL_MAPS = 'https://maps.app.goo.gl/JYSAaXyyJXKDk1hY8';
+const DEFAULT_WA = '5492615029744';
+
+const dNone = parseDemoConfig('');
+if (
+  dNone.local !== null ||
+  dNone.mesa !== null ||
+  dNone.whatsappOverride !== null ||
+  dNone.mapsOverride !== null ||
+  dNone.logo !== null
+) {
+  errors.push('sin params debe resolver todo null');
+}
+const rNone = resolveBusiness(dNone);
+if (rNone.name !== 'El Asadito Bodegón') errors.push('nombre default');
+if (rNone.mapsUrl !== OFFICIAL_MAPS) errors.push('maps default');
+if (rNone.whatsapp !== DEFAULT_WA) errors.push('whatsapp default');
+if (!rNone.isDefault || rNone.heroSub !== 'Bodegón') errors.push('lockup default');
+
+const r1 = resolveBusiness(parseDemoConfig('?local=La%20Parrilla&mesa=7'));
+if (r1.name !== 'La Parrilla' || r1.mesa !== '7') errors.push('local/mesa dinámicos');
+if (r1.isDefault || r1.heroSub !== undefined) errors.push('lockup custom');
+
+const r2 = resolveBusiness(
+  parseDemoConfig(
+    '?local=La%20Parrilla&mesa=7&wa=5492615029744&maps=https%3A%2F%2Fmaps.app.goo.gl%2Ftest',
+  ),
+);
+if (r2.whatsapp !== DEFAULT_WA) errors.push('wa override');
+if (r2.mapsUrl !== 'https://maps.app.goo.gl/test') errors.push('maps override');
+
+const d3 = parseDemoConfig('?wa=abc&maps=javascript:alert(1)&logo=http://x.com/a.png&local=&mesa=');
+if (d3.whatsappOverride !== null) errors.push('wa inválido debe ignorarse');
+if (d3.mapsOverride !== null) errors.push('maps javascript: debe ignorarse');
+if (d3.logo !== null) errors.push('logo http debe ignorarse');
+if (d3.local !== null || d3.mesa !== null) errors.push('local/mesa vacíos deben ser null');
+
+const d4 = parseDemoConfig('?logo=https://cdn.x.com/logo.png');
+if (d4.logo !== 'https://cdn.x.com/logo.png') errors.push('logo https válido');
+if (parseDemoConfig('?logo=https://cdn.x.com/virus.exe').logo !== null) {
+  errors.push('logo .exe debe ignorarse');
+}
+
+const longName = 'Parrilla La Gran Mendoza del Centro';
+if (parseDemoConfig(`?local=${encodeURIComponent(longName)}`).local !== longName) {
+  errors.push('nombre largo debe conservarse');
+}
+const accentName = 'El Rincón del Asado — Mendoza';
+if (parseDemoConfig(`?local=${encodeURIComponent(accentName)}`).local !== accentName) {
+  errors.push('nombre con acentos debe conservarse');
+}
+parseDemoConfig('?%E2%82%AC&local=%E0%A4'); // malformada: no debe lanzar
 
 const ars = formatPrice(12500, 'ARS', 'blue');
 if (ars !== '$ 12.500') errors.push(`ARS esperaba "$ 12.500" y dio "${ars}"`);

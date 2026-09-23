@@ -76,6 +76,35 @@ Base visual y funcional del menú:
 - Confirmación local «Tu comentario ya está listo para enviar.» (aria-live);
   nada se almacena en localStorage; preferencias de idioma/moneda intactas.
 
+## Fase 6 — Demo maestra configurable por URL
+
+La misma app se personaliza sin reconstruir mediante query params:
+
+| Param  | Efecto | Validación |
+| ------ | ------ | ---------- |
+| `local` | Nombre visible (hero, header, footer, `document.title`, mensajes WA) | texto saneado, máx. 60 |
+| `mesa`  | Chip discreto «Mesa N» en header | texto corto opcional |
+| `wa`    | Sobrescribe WhatsApp (`businessContact`) | solo dígitos 8–15 |
+| `maps`  | Sobrescribe URL de Google Maps (reseñas + header) | solo `https:` |
+| `logo`  | Logo remoto con fallback si falla | `https:` + extensión de imagen |
+
+Sin parámetros: experiencia exacta de El Asadito Bodegón (defaults en
+`data/business.ts`). Parsing centralizado en `utils/demoConfig.ts`
+(`parseDemoConfig` / `getDemoConfig` / `resolveBusiness`) y consumido por
+`hooks/useDemoConfig.ts` (`useDemoBusiness`): única fuente de verdad.
+El contenido gastronómico (carta, vinos) sigue siendo el demo de El Asadito;
+Instagram permanece como default. Sin CMS ni backend.
+
+Ejemplos:
+
+```
+/
+/?local=La%20Parrilla
+/?local=La%20Parrilla&mesa=7
+/?local=La%20Parrilla&mesa=7&wa=5492615029744&maps=https%3A%2F%2Fmaps.app.goo.gl%2Ftest
+/?logo=https%3A%2F%2Fejemplo.com%2Flogo.png
+```
+
 ## Validación
 
 ```bash

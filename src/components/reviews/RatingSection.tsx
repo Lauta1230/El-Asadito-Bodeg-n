@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useT } from '../../context/PreferencesContext';
-import { businessConfig } from '../../data/business';
+import { useDemoBusiness } from '../../hooks/useDemoConfig';
 import { getRatingBand } from '../../utils/reviews';
 import { PrivateFeedbackForm } from './PrivateFeedbackForm';
 import { RatingStars } from './RatingStars';
@@ -12,6 +12,7 @@ import { RatingStars } from './RatingStars';
  */
 export function RatingSection() {
   const t = useT();
+  const biz = useDemoBusiness();
   const [rating, setRating] = useState(0);
   const [showMidForm, setShowMidForm] = useState(false);
 
@@ -36,7 +37,7 @@ export function RatingSection() {
             <p className="review-msg">{t('rating5')}</p>
             <a
               className="btn-primary review-google"
-              href={businessConfig.mapsUrl}
+              href={biz.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -51,7 +52,7 @@ export function RatingSection() {
             <div className="review-actions">
               <a
                 className="btn-primary review-google"
-                href={businessConfig.mapsUrl}
+                href={biz.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >

@@ -294,6 +294,7 @@ export type UiKey =
   | 'seeOnMenu'
   | 'sommelierNote'
   | 'punto'
+  | 'mesa'
   | 'reviewTitle'
   | 'reviewSubtitle'
   | 'starsAria'
@@ -366,6 +367,7 @@ export const UI_STRINGS: Record<UiKey, LocalizedText> = {
     en: 'Sommelier’s note',
   },
   punto: { es: 'Punto', pt: 'Ponto', en: 'Doneness' },
+  mesa: { es: 'Mesa', pt: 'Mesa', en: 'Table' },
   reviewTitle: {
     es: '¿Cómo fue tu experiencia?',
     pt: 'Como foi sua experiência?',

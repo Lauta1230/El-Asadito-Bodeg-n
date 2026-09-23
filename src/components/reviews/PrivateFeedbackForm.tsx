@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { usePreferences, useT } from '../../context/PreferencesContext';
-import { businessConfig, businessContact } from '../../data/business';
+import { useDemoBusiness } from '../../hooks/useDemoConfig';
 import { buildWhatsAppUrl, composeFeedbackMessage } from '../../utils/reviews';
 
 interface Props {
@@ -15,12 +15,13 @@ interface Props {
 export function PrivateFeedbackForm({ rating }: Props) {
   const { lang } = usePreferences();
   const t = useT();
+  const biz = useDemoBusiness();
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
 
-  const phone = businessContact.whatsapp;
+  const phone = biz.whatsapp;
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -31,7 +32,7 @@ export function PrivateFeedbackForm({ rating }: Props) {
     setError(null);
     const message = composeFeedbackMessage({
       lang,
-      restaurantName: businessConfig.name,
+      restaurantName: biz.name,
       rating,
       name,
       comment,
