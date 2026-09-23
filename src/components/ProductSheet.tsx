@@ -1,19 +1,29 @@
 import { useEffect, useRef } from 'react';
 import { usePreferences, useT } from '../context/PreferencesContext';
+import { supportsDoneness } from '../data/doneness';
 import { CATEGORIES } from '../data/menu';
-import type { MenuItem } from '../data/types';
+import type { DonenessId, MenuItem } from '../data/types';
 import { formatPrice } from '../utils/format';
+import { DonenessSelector } from './doneness/DonenessSelector';
 
 interface Props {
   item: MenuItem | null;
   onClose: () => void;
+  /** Punto de carne confirmado en la sesión para el producto abierto. */
+  confirmedDoneness?: DonenessId;
+  onConfirmDoneness?: (productId: string, level: DonenessId) => void;
 }
 
 /**
  * Bottom sheet premium con estética de "hoja de carta":
  * papel cálido y esquineros cobreados como la carta física.
  */
-export function ProductSheet({ item, onClose }: Props) {
+export function ProductSheet({
+  item,
+  onClose,
+  confirmedDoneness,
+  onConfirmDoneness,
+}: Props) {
   const { lang, currency, rateType } = usePreferences();
   const t = useT();
   const closeRef = useRef<HTMLButtonElement | null>(null);
@@ -55,6 +65,12 @@ export function ProductSheet({ item, onClose }: Props) {
           <span className="sheet-price-label">{t('precio')}</span>
           <span className="sheet-price">{formatPrice(item.priceARS, currency, rateType)}</span>
         </div>
+        {supportsDoneness(item) && (
+          <DonenessSelector
+            confirmed={confirmedDoneness}
+            onConfirm={(level) => onConfirmDoneness?.(item.id, level)}
+          />
+        )}
         <button ref={closeRef} type="button" className="sheet-close" onClick={onClose}>
           {t('cerrar')}
         </button>

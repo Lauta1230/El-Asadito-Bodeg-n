@@ -60,6 +60,9 @@ export type CurrencyCode = 'ARS' | 'USD' | 'BRL';
 
 export type RateType = 'oficial' | 'blue';
 
+/** Niveles de punto de la carne ofrecidos (Fase 3). */
+export type DonenessId = 'jugoso' | 'a-punto' | 'bien-cocido';
+
 export interface RestaurantMeta {
   name: string;
   sub: string;

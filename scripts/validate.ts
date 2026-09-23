@@ -3,6 +3,7 @@
  * integridad de la carta (46 productos / 7 categorías), completitud
  * i18n ES/PT/EN y formatos de precio ARS/USD/BRL por Oficial/Blue.
  */
+import { DONENESS_LEVELS, supportsDoneness } from '../src/data/doneness';
 import { CATEGORIES, MENU_ITEMS } from '../src/data/menu';
 import { UI_STRINGS } from '../src/data/translations';
 import type { Language } from '../src/data/types';
@@ -54,6 +55,49 @@ const sample = MENU_ITEMS[0];
 console.log(`ES + ARS        : ${sample.name.es} -> ${formatPrice(sample.priceARS, 'ARS', 'oficial')}`);
 console.log(`EN + USD (blue) : ${sample.name.en} -> ${formatPrice(sample.priceARS, 'USD', 'blue')}`);
 console.log(`PT + BRL (ofic.): ${sample.name.pt} -> ${formatPrice(sample.priceARS, 'BRL', 'oficial')}`);
+
+/* ---- Fase 3: elegibilidad del punto de carne y textos localizados ---- */
+const eligible = MENU_ITEMS.filter((i) => supportsDoneness(i)).map((i) => i.id).sort();
+const expectedEligible = ['churrascos-de-ternera', 'churrasquito-de-ternera'];
+if (JSON.stringify(eligible) !== JSON.stringify(expectedEligible)) {
+  errors.push(`elegibles punto de carne = [${eligible.join(', ')}] (esperado [${expectedEligible.join(', ')}])`);
+}
+for (const item of MENU_ITEMS) {
+  if (
+    supportsDoneness(item) &&
+    item.category !== 'para-compartir' &&
+    item.category !== 'principales'
+  ) {
+    errors.push(`${item.id}: selector en categoría no cárnica (${item.category})`);
+  }
+  if (
+    !supportsDoneness(item) &&
+    (item.category === 'entradas' ||
+      item.category === 'pastas' ||
+      item.category === 'postres' ||
+      item.category === 'bebidas')
+  ) {
+    continue; // correcto: sin selector
+  }
+}
+if (DONENESS_LEVELS.length !== 3) errors.push(`niveles de cocción=${DONENESS_LEVELS.length} (esperado 3)`);
+for (const level of DONENESS_LEVELS) {
+  for (const lang of LANGS) {
+    if (!level.label[lang]?.trim()) errors.push(`doneness ${level.id}: label[${lang}] vacío`);
+    if (!level.description[lang]?.trim()) {
+      errors.push(`doneness ${level.id}: description[${lang}] vacío`);
+    }
+  }
+}
+for (const key of ['donenessQuestion', 'confirmDoneness', 'donenessConfirmed'] as const) {
+  for (const lang of LANGS) {
+    const text = UI_STRINGS[key][lang];
+    if (!text?.trim()) errors.push(`UI ${key}[${lang}] vacío`);
+    if (key === 'donenessConfirmed' && !text.includes('{level}')) {
+      errors.push(`donenessConfirmed[${lang}] debe contener {level}`);
+    }
+  }
+}
 
 const ars = formatPrice(12500, 'ARS', 'blue');
 if (ars !== '$ 12.500') errors.push(`ARS esperaba "$ 12.500" y dio "${ars}"`);

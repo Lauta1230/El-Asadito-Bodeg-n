@@ -285,6 +285,9 @@ export type UiKey =
   | 'blue'
   | 'valoresReferencia'
   | 'categoriasAria'
+  | 'donenessQuestion'
+  | 'confirmDoneness'
+  | 'donenessConfirmed'
   | 'footerMeta';
 
 export const UI_STRINGS: Record<UiKey, LocalizedText> = {
@@ -307,6 +310,21 @@ export const UI_STRINGS: Record<UiKey, LocalizedText> = {
     es: 'Categorías de la carta',
     pt: 'Categorias do cardápio',
     en: 'Menu categories',
+  },
+  donenessQuestion: {
+    es: '¿Cómo querés tu carne?',
+    pt: 'Como você quer sua carne?',
+    en: 'How would you like your meat?',
+  },
+  confirmDoneness: {
+    es: 'Confirmar punto',
+    pt: 'Confirmar ponto',
+    en: 'Confirm doneness',
+  },
+  donenessConfirmed: {
+    es: '{level} seleccionado',
+    pt: '{level} selecionado',
+    en: '{level} selected',
   },
   footerMeta: {
     es: 'Demo comercial · Fase 2 — Carta digitalizada fielmente desde la carta física del restaurante.',

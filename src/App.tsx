@@ -8,7 +8,7 @@ import { MenuSection } from './components/MenuSection';
 import { ProductSheet } from './components/ProductSheet';
 import { PreferencesProvider } from './context/PreferencesContext';
 import { CATEGORIES, MENU_ITEMS } from './data/menu';
-import type { MenuItem } from './data/types';
+import type { DonenessId, MenuItem } from './data/types';
 
 export default function App() {
   return (
@@ -20,6 +20,12 @@ export default function App() {
 
 function Shell() {
   const [selected, setSelected] = useState<MenuItem | null>(null);
+  /** Punto de carne confirmado por producto (temporal, solo sesión). */
+  const [doneness, setDoneness] = useState<Record<string, DonenessId>>({});
+
+  const confirmDoneness = useCallback((productId: string, level: DonenessId) => {
+    setDoneness((prev) => ({ ...prev, [productId]: level }));
+  }, []);
 
   const itemsByCategory = useMemo(() => {
     const map = new Map<string, MenuItem[]>();
@@ -52,7 +58,12 @@ function Shell() {
         ))}
       </main>
       <Footer />
-      <ProductSheet item={selected} onClose={closeItem} />
+      <ProductSheet
+        item={selected}
+        onClose={closeItem}
+        confirmedDoneness={selected ? doneness[selected.id] : undefined}
+        onConfirmDoneness={confirmDoneness}
+      />
     </div>
   );
 }

@@ -649,6 +649,149 @@ body::before {
   }
 }
 
+/* ------------------------ PUNTO DE LA CARNE ------------------------ */
+
+.doneness {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(38, 25, 14, 0.32);
+}
+
+.doneness-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--paper-ink);
+}
+
+.doneness-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 420px) {
+  .doneness-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.doneness-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 10px;
+  border: 1.5px solid rgba(38, 25, 14, 0.22);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.35);
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: transform 0.16s ease, border-color 0.2s ease, box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .doneness-option:hover {
+    border-color: rgba(154, 90, 38, 0.55);
+  }
+}
+
+.doneness-option:active {
+  transform: scale(0.97);
+}
+
+.doneness-option.is-selected {
+  border-color: var(--copper-deep);
+  background: rgba(201, 126, 69, 0.16);
+  box-shadow: 0 6px 18px -10px rgba(154, 90, 38, 0.55);
+}
+
+.doneness-art {
+  width: 64px;
+  height: 46px;
+}
+
+.doneness-name {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--paper-ink);
+}
+
+.doneness-desc {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--paper-dim);
+  text-align: center;
+}
+
+.doneness-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--copper-deep);
+  color: #fff8ef;
+  animation: pop-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.doneness-check svg {
+  width: 12px;
+  height: 12px;
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.doneness-confirm {
+  width: 100%;
+  margin-top: 12px;
+  padding: 13px;
+  border: none;
+  border-radius: 999px;
+  background: var(--copper-deep);
+  color: #fff8ef;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.2s ease;
+}
+
+.doneness-confirm:hover {
+  filter: brightness(1.08);
+}
+
+.doneness-confirm:active {
+  transform: scale(0.98);
+}
+
+.doneness-feedback {
+  min-height: 18px;
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--copper-deep);
+  text-align: center;
+}
+
 /* ------------------------- BANDA FOTO + FOOTER --------------------- */
 
 .photo-band {

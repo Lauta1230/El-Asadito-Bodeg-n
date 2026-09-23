@@ -27,11 +27,24 @@ Base visual y funcional del menú:
 - Nota discreta «Valores de referencia» junto al conversor.
 - Default ES + ARS + Oficial idéntico a la experiencia de Fase 1.
 
+## Fase 3
+
+- **Selector visual de punto de la carne** dentro del bottom sheet existente,
+  solo en productos elegibles (cortes a la parrilla: churrascos/churrasquito
+  de ternera) vía `supportsDoneness(product)` en `data/doneness.ts`.
+- Tres niveles localizados ES/PT/EN — Jugoso / A punto / Bien cocido — con
+  ilustración SVG propia del interior del corte (rojo / rosado / marrón),
+  cards táctiles con hover/pressed/seleccionada, CTA «Confirmar punto» y
+  feedback breve («Jugoso seleccionado»), accesible por teclado y aria-live.
+- Selección temporal por producto en el estado de la sesión; `menu.ts`
+  y los precios no se tocan. Coexiste con ARS/USD/BRL y Oficial/Blue.
+
 ## Validación
 
 ```bash
 npm run build   # tsc + vite build
-npm run check   # 46 productos, 7 categorías, i18n completo, formatos de precio
+npm run check   # 46 productos, 7 categorías, i18n completo, formatos de precio,
+                # elegibilidad del punto de carne y textos del módulo ES/PT/EN
 ```
 
 ## Stack y estructura
