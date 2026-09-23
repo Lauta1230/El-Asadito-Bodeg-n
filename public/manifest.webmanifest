@@ -1,0 +1,19 @@
+{
+  "name": "Menú Digital — Demo Maestra",
+  "short_name": "Menú Digital",
+  "description": "Demo maestra de menú digital mobile-first para restaurantes (BlackXProyect).",
+  "lang": "es",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#14100b",
+  "theme_color": "#14100b",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

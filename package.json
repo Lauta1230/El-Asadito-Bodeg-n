@@ -1,0 +1,25 @@
+{
+  "name": "el-asadito-bodegon-carta",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Menú digital mobile-first de El Asadito Bodegón (Mendoza) — Fase 1: base visual y carta digitalizada.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5173",
+    "build": "tsc && vite build",
+    "check": "tsx scripts/validate.ts",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "tsx": "^4.23.15",
+    "typescript": "~5.6.2",
+    "vite": "^5.4.10"
+  }
+}
